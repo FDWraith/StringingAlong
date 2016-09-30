@@ -3,10 +3,13 @@
 #include <string.h>
 
 int strLength(char *ref);
+char * strCopy(char *dest, char *orig);
 char * strnCopy(char *dest, char *orig, char len);
 char * strKitten(char *s1, char *s2);
+char * strnKitten(char *s1, char *s2, char len);
 int strCompare(char *s1, char *s2);
 char * strChar(char *s1, char checker);
+char * strStress(char *s1, char *checker);
 
 int main(){
   printf("Testing String Functions\n");
@@ -27,16 +30,25 @@ int main(){
   printf("\tSubjectOne Prior:%s\n",s1);
   strncpy(s1,s2,5);
   printf("\tSubjectOne After:%s\n",s1);
-  printf("Resetting SubjectOne\n");
+  printf("\tSubjectTwo Prior:%s\n",s2);
+  strcpy(s2,s3);
+  printf("\tSubjectTwo After:%s\n",s2);
+  printf("Resetting Subjects\n");
   strcpy(s1,"Hello");
+  strcpy(s2,"Hellish");
   printf("Reset Complete\n");
   printf("Results for my methods:\n");
   printf("\tSubjectOne Prior:%s\n",s1);
   strnCopy(s1,s2,5);
   printf("\tSubjectOne After:%s\n",s1);
-  printf("Resetting SubjectOne\n");
+  printf("\tSubjectTwo Prior:%s\n",s2);
+  strCopy(s2,s3);
+  printf("\tSubjectTwo After:%s\n",s2);
+  printf("Resetting Subjects\n");
   strcpy(s1,"Hello");
+  strcpy(s2,"Hellish");
   printf("Reset Complete\n");
+  
   printf("Test of Copying Complete\n\n");
  
   printf("Beginning Test of Kittens:\n");
@@ -44,15 +56,23 @@ int main(){
   printf("\tSubjectOne Prior:%s\n",s1);
   strcat(s1,s3);
   printf("\tSubjectOne After:%s\n",s1);
-  printf("Resetting SubjectOne\n");
+  printf("\tSubjectTwo Prior:%s\n",s2);
+  strncat(s2,s1,4);
+  printf("\tSubjectTwo After:%s\n",s2);
+  printf("Resetting Subjects\n");
   strcpy(s1,"Hello");
+  strcpy(s2,"Hellish");
   printf("Reset Complete\n");
   printf("Results for my methods:\n");
   printf("\tSubjectOne Prior:%s\n",s1);
   strKitten(s1,s3);
   printf("\tSubjectOne After:%s\n",s1);
-  printf("Resetting SubjectOne\n");
+  printf("\tSubjectTwo Prior:%s\n",s2);
+  strnKitten(s2,s1,4);
+  printf("\tSubjectTwo After:%s\n",s2);
+  printf("Resetting Subjects\n");
   strcpy(s1,"Hello");
+  strcpy(s2,"Hellish");
   printf("Reset Complete\n");
   printf("Test of Kittens Complete\n\n");
 
@@ -78,7 +98,19 @@ int main(){
   printf("\tSearching through SubjectThree [%s] for [%c] results in: [%s]\n",s3,'e',strChar(s3,'e') );
   printf("Test of Characters Complete\n\n");
 
-
+  printf("Beginning Test of Stress:\n");
+  printf("Results of built-in methods:\n");
+  printf("\tSearching through SubjectOne [%s] for [%s] results in: [%s]\n",s1,"ll", strstr(s1,"ll"));
+  printf("\tSearching through SubjectTwo [%s] for [%s] results in: [%s]\n",s2,"H", strstr(s2,"H"));
+  printf("\tSearching through SubjectThree [%s] for [%s] results in: [%s]\n",s3,"bee", strstr(s2,"bee"));
+  printf("Results of my methods:\n");
+    printf("\tSearching through SubjectOne [%s] for [%s] results in: [%s]\n",s1,"ll", strStress(s1,"ll"));
+  printf("\tSearching through SubjectTwo [%s] for [%s] results in: [%s]\n",s2,"H", strStress(s2,"H"));
+  printf("\tSearching through SubjectThree [%s] for [%s] results in: [%s]\n",s3,"bee", strStress(s2,"bee"));
+  printf("Test of Stress Complete\n\n");
+  
+  printf("Testing is now Complete!\n");
+  return 0;
 }
 
 
@@ -91,12 +123,19 @@ int strLength(char *ref){
   return n;
 }
 
+char * strCopy(char *dest, char *orig){
+  char i = 0;
+  while(i < strlen(orig) + 1){
+    dest[i] = orig[i];
+    i++;
+  }
+  return dest;
+}
+
 char * strnCopy(char *dest, char *orig, char len){
   char i = 0;
   while (i < len){
     dest[i] = orig[i];
-    dest++;
-    orig++;
     i++;
   }
   return dest;
@@ -105,11 +144,22 @@ char * strnCopy(char *dest, char *orig, char len){
 char * strKitten(char *dest, char *orig){
   char i = strlen(dest);
   char j = 0;
-  while(orig[j]){
+  while(j < strlen(orig) + 1){
     dest[i] = orig[0];
     orig++;
     i++;
     j++;
+  }
+  return dest;
+}
+
+char * strnKitten(char *dest, char *orig, char len){
+  char i = strlen(dest);
+  char j = 0;
+  while(j < len){
+    dest[i] = orig[j];
+    j++;
+    i++;
   }
   return dest;
 }
@@ -127,6 +177,23 @@ char * strChar(char *string, char checker){
   while(string[i]){
     if(string[i] == checker){
       return string + i;
+    }
+    i++;
+  }
+  return 0;
+}
+
+char * strStress(char *s1, char *checker){
+  char i = 0;
+  char j = 0;
+  while(s1[i]){
+    if(s1[i] == checker[j]){
+      j++;
+    }else{
+      j = 0;
+    }
+    if(!checker[j]){
+      return s1 + i + 1 - j ;
     }
     i++;
   }
